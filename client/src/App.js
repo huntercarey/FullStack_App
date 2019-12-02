@@ -46,6 +46,8 @@ class App extends Component {
     while (currentIds.includes(idToBeAdded)) {
       idToBeAdded++;
     }
+
+
     
     axios({
       url: 'http://localhost:3001/api/postData',
@@ -60,6 +62,26 @@ class App extends Component {
       console.log(error);
     })
   };
+
+  deleteFromDB = idToDelete => {
+    let objectIdToDelete = null;
+    this.state.data.forEach(dat => {
+      if (String(dat.id)=== String(idToDelete)) {
+        objectIdToDelete =dat.id;
+      }
+    });
+    axios( {
+      url: 'http://localhost:3001/api/postData',
+      method: 'DELETE',
+      data: {
+        objectIdToDelete
+      }
+    }).then((response) => {
+      console.log(response);
+    }).then((error) => {
+      console.log(error);
+    });
+  }
 
   renderListItems() {
     //Deconstructing the data from our state object
@@ -96,7 +118,8 @@ class App extends Component {
         </div>
 
         <div>
-          <input />
+          <input type='text' placeholder='Enter ID of Item to Delete' onChange={event => this.setState({
+            idToDelete: event.target.value})} />
           <button>DELETE</button>
         </div>
 
@@ -104,6 +127,10 @@ class App extends Component {
         <div>
           <input />
           <button>UPDATE</button>
+        </div>
+
+        <div>
+          <input />
         </div>
 
       </div>
